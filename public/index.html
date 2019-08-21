@@ -7,11 +7,33 @@
     <body>
         <h1>Chat App</h1>
 
+        <!-- holder for all messages -->
+        <div id="messages"></div>
+
         <form id="messageForm">
             <input name="message" type="text" placeholder="Message" />
             <button>Send</button>
         </form>
+        <button id="sendLocation">Send Location</button>
 
+        <!-- message template for rendering -->
+        <script id="messageTemplate" type="text/html">
+            <div>
+                <p>{{createdAt}} - {{message}}</p> <!--handled by mustache-->
+            </div>
+        </script>
+
+        <!-- location template for rendering -->
+        <script id="locationTemplate" type="text/html">
+            <div>
+                <p>{{createdAt}} - <a href={{url}}>Link</a></p>
+            </div>
+        </script>
+
+        <!-- scripts -->
+        <script src="/js/mustache.min.js"></script>
+        <script src="/js/moment.min.js"></script>
+        <script src="/js/qs.min.js"></script>
         <!-- websocket on client side -->
         <script src="/socket.io/socket.io.js"></script>
         <script src="/js/chat.js"></script>
