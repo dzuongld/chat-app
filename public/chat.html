@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chat App</title>
+        <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="/css/styles.min.css" />
+
+        <!-- include alertify.css -->
+        <link rel="stylesheet" href="/css/alertify.min.css" />
+
+        <!-- include boostrap theme  -->
+        <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    </head>
+
+    <body>
+        <div class="chat">
+            <div id="sidebar" class="chat__sidebar"></div>
+
+            <!-- main area -->
+            <div class="chat__main">
+                <!-- holder for all messages -->
+                <div id="messages" class="chat__messages"></div>
+
+                <!-- compose new message -->
+                <div class="compose">
+                    <form id="messageForm">
+                        <input name="message" type="text" placeholder="Message" autocomplete="off" required />
+                        <button>Send</button>
+                    </form>
+                    <button id="sendLocation">Send Location</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- message template for rendering -->
+        <script id="messageTemplate" type="text/html">
+            <div class="message">
+                <p>
+                    <span class="message__name">{{username}}</span>
+                    <span class="message__meta">{{createdAt}}</span>
+                </p>
+                <p>{{message}}</p> <!--handled by mustache-->
+            </div>
+        </script>
+
+        <!-- location template for rendering -->
+        <script id="locationTemplate" type="text/html">
+            <div class="message">
+                <p>
+                    <span class="message__name">{{username}}</span>
+                    <span class="message__meta">{{createdAt}}</span>
+                </p>
+                <p><a href="{{url}}" target="_blank">Link</a></p>
+            </div>
+        </script>
+
+        <!-- to be placed inside sidebar area -->
+        <script id="sidebarTemplate" type="text/html">
+            <h2 class="room-title">{{room}}</h2>
+            <h3 class="list-title">Users</h3>
+            <ul class="users">
+                {{#users}} <!-- an array -->
+                <li>{{username}}</li>
+                {{/users}}
+            </ul>
+        </script>
+
+        <!-- scripts -->
+        <script src="/js/mustache.min.js"></script>
+        <script src="/js/moment.min.js"></script>
+        <script src="/js/qs.min.js"></script>
+        <!-- alertify -->
+        <script src="/js/alertify.min.js"></script>
+        <script type="text/javascript">
+            //override defaults
+            alertify.defaults.transition = 'slide'
+            alertify.defaults.theme.ok = 'btn btn-primary'
+            alertify.defaults.theme.cancel = 'btn btn-danger'
+            alertify.defaults.theme.input = 'form-control'
+        </script>
+        <!-- websocket on client side -->
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/chat.js"></script>
+    </body>
+</html>

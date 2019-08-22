@@ -8,19 +8,21 @@ const $messageFormButton = $messageForm.querySelector('button')
 const $sendLocationButton = document.querySelector('#sendLocation')
 const $messages = document.querySelector('#messages')
 
+// templates
 const messageTemplate = document.querySelector('#messageTemplate').innerHTML
 const locationTemplate = document.querySelector('#locationTemplate').innerHTML
+const sidebarTemplate = document.querySelector('#sidebarTemplate').innerHTML
+
+// querystring.js
+// ?key=value&...
+const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true }) // ignore '?'
 
 // receive events from server
-socket.on('newUser', (user = 'Anonymous') => {
-    console.log(user, 'has joined the chat.')
-})
-
 // regular message
 socket.on('message', (message) => {
-    console.log(message)
     // final html displayed in browser
     const html = Mustache.render(messageTemplate, {
+        username: message.username,
         message: message.text,
         createdAt: moment(message.createdAt).format('h:mm a') // moment.js
     })
@@ -29,8 +31,9 @@ socket.on('message', (message) => {
 
 // location message
 socket.on('locationMessage', (url) => {
-    console.log(url)
+    // console.log(url)
     const html = Mustache.render(locationTemplate, {
+        username: url.username,
         url: url.text,
         createdAt: moment(url.createdAt).format('h:mm a')
     })
@@ -52,8 +55,8 @@ $messageForm.addEventListener('submit', (e) => {
         $messageFormInput.value = ''
         $messageFormInput.focus()
 
-        if (error) return console.log(error)
-        console.log('Delivered!')
+        if (error) return alertify.error(error)
+        // console.log('Delivered!')
     })
 })
 
@@ -70,9 +73,23 @@ $sendLocationButton.addEventListener('click', () => {
             lng: position.coords.longitude
         }
         const callback = () => {
-            console.log('Location shared!')
+            // console.log('Location shared!')
             $sendLocationButton.removeAttribute('disabled')
         }
         socket.emit('sendLocation', location, callback)
     })
+})
+
+// join a room with parsed data
+socket.emit('join', { username, room }, (error) => {
+    if (error) {
+        alert(error)
+        location.href = '/'
+    }
+})
+
+// user list
+socket.on('roomData', ({ room, users }) => {
+    const html = Mustache.render(sidebarTemplate, { room, users })
+    document.querySelector('#sidebar').innerHTML = html
 })

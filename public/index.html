@@ -2,40 +2,22 @@
 <html>
     <head>
         <title>Chat App</title>
+        <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="/css/styles.min.css" />
     </head>
 
     <body>
-        <h1>Chat App</h1>
-
-        <!-- holder for all messages -->
-        <div id="messages"></div>
-
-        <form id="messageForm">
-            <input name="message" type="text" placeholder="Message" />
-            <button>Send</button>
-        </form>
-        <button id="sendLocation">Send Location</button>
-
-        <!-- message template for rendering -->
-        <script id="messageTemplate" type="text/html">
-            <div>
-                <p>{{createdAt}} - {{message}}</p> <!--handled by mustache-->
+        <div class="centered-form">
+            <div class="centered-form__box">
+                <h1>Join</h1>
+                <form action="/chat.html">
+                    <label for="">Display name</label>
+                    <input type="text" name="username" placeholder="Display name" required />
+                    <label for="">Room</label>
+                    <input type="text" name="room" placeholder="room" required />
+                    <button type="submit">Join</button>
+                </form>
             </div>
-        </script>
-
-        <!-- location template for rendering -->
-        <script id="locationTemplate" type="text/html">
-            <div>
-                <p>{{createdAt}} - <a href={{url}}>Link</a></p>
-            </div>
-        </script>
-
-        <!-- scripts -->
-        <script src="/js/mustache.min.js"></script>
-        <script src="/js/moment.min.js"></script>
-        <script src="/js/qs.min.js"></script>
-        <!-- websocket on client side -->
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="/js/chat.js"></script>
+        </div>
     </body>
 </html>
